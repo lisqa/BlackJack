@@ -3,7 +3,6 @@ require_relative 'accessors'
 
 class Card
   attr_accessor :number, :suit
-  attr_reader :value
   extend Accessors
 
   attr_accessor_with_history :card
@@ -26,8 +25,7 @@ class Card
 
 
   def value(player) 
-    @number != 'ace' ? VALUES_OF_CARDS[NUMBERS_OF_CARDS.index(@number)] : case player.cards.index(self)
-      
+    @number != 'ace' ? VALUES_OF_CARDS[NUMBERS_OF_CARDS.index(@number)] : case player.cards.index(self)      
       when 0 
         if player.cards[1].number != 'ace'
           (MAX_POINT - player.cards[1].value(player)) > (MAX_POINT - MAX_ACE_VALUE) ? MAX_ACE_VALUE : MIN_ACE_VALUE
@@ -44,36 +42,4 @@ class Card
         (MAX_POINT - player.cards[0].value(player) - player.cards[1].value(player)) > (MAX_POINT - MAX_ACE_VALUE) ? MAX_ACE_VALUE : MIN_ACE_VALUE
       end
   end
-
-
-
-
-
-=begin
-if @number != 'ace' 
-      @value = VALUES_OF_CARDS[NUMBERS_OF_CARDS.index(@number)]
-    else
-
-  def value(player) 
-    if @number != 'ace'
-      @value = VALUES_OF_CARDS[NUMBERS_OF_CARDS.index(@number)]
-    else
-      if player.cards.index(self) == 0
-        if player.cards[1].number != 'ace'
-          (MAX_POINT - player.cards[1].value(player)) > (MAX_POINT - MAX_ACE_VALUE) ? @value = MAX_ACE_VALUE : @value = MIN_ACE_VALUE
-        else 
-          @value = MAX_ACE_VALUE
-        end
-      elsif player.cards.index(self) == 1
-        if player.cards[0].number != 'ace'
-          (MAX_POINT - player.cards[0].value(player)) > (MAX_POINT - MAX_ACE_VALUE) ? @value = MAX_ACE_VALUE : @value = MIN_ACE_VALUE
-        else 
-          @value = MIN_ACE_VALUE
-        end
-      elsif player.cards.index(self) == 2
-        (MAX_POINT - player.cards[0].value(player) - player.cards[1].value(player)) > (MAX_POINT - MAX_ACE_VALUE) ? @value = MAX_ACE_VALUE : @value = MIN_ACE_VALUE
-      end
-    end
-  end
-=end
 end

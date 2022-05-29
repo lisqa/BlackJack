@@ -2,7 +2,7 @@ require_relative 'card'
 require_relative 'player'
 
 class Play
-  attr_accessor :diler, :player, :game_bank
+  attr_reader :diler, :player, :game_bank
   MAX_BANK = 100
   STEP_BANK = 10
   MAX_POINT = 21
