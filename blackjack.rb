@@ -3,20 +3,29 @@ require_relative 'player'
 
 class Play
   attr_accessor :diler, :player, :game_bank
+  MAX_BANK = 100
+  STEP_BANK = 10
+  MAX_POINT = 21
 
   def run
-    bank(100)
+    bank(MAX_BANK)
     puts "Your bank: #{@player.bank}"    
     loop do 
       start
-      playplayer
-      break if @player.bank == 0 || @diler.bank == 0
-    end
-    puts "
-    --Game over. Would you like to play again? 
+      playplayer    
+      puts "
+      --Round over. Would you like new round? 
           1 - yes
-          2 - no"
-    run if gets.chomp == '1'
+          2 - no"   
+      break if @player.bank == 0 || @diler.bank == 0 || gets.chomp == '2' 
+    end
+    if @player.bank == 0 || @diler.bank == 0
+      puts "
+      --Game over. Would you like to play again? 
+            1 - yes
+            2 - no"
+      run if gets.chomp == '1'
+    end
   end
 
   def hello
@@ -39,17 +48,17 @@ class Play
     2.times do
       Player.all.each { |player| player.add_card }
     end
-    Player.all.each { |player| player.bank -= 10 }
-    @game_bank = 20
+    Player.all.each { |player| player.bank -= STEP_BANK }
+    @game_bank = STEP_BANK * 2
     putscards(@player)
   end
 
   def liedown
-    if (21 - @diler.cards_summ).abs > (21 - @player.cards_summ).abs
+    if (MAX_POINT - @diler.cards_summ).abs > (MAX_POINT - @player.cards_summ).abs && @player.cards_summ <= MAX_POINT
       @player.bank += @game_bank
       puts "--Round over! You win! Your bank: #{@player.bank}" 
       putscards(@diler)
-    elsif (21 - @player.cards_summ).abs > (21 - @diler.cards_summ).abs
+    elsif (MAX_POINT - @player.cards_summ).abs > (MAX_POINT - @diler.cards_summ).abs && @diler.cards_summ <= MAX_POINT
       @diler.bank += @game_bank
       puts "--Round over! You lose :(. Your bank: #{@player.bank}"
       putscards(@diler)
